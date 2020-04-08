@@ -33,6 +33,9 @@ export default class Auth0Client {
   private domainUrl: string;
   private tokenIssuer: string;
   private readonly DEFAULT_SCOPE = 'openid profile email';
+  private authorizeEndpoint: string;
+  private tokenEndpoint: string;
+  private userinfoEndpoint: string;
 
   constructor(private options: Auth0ClientOptions) {
     this.cache = new Cache();
@@ -41,6 +44,9 @@ export default class Auth0Client {
     this.tokenIssuer = this.options.issuer
       ? `https://${this.options.issuer}/`
       : `${this.domainUrl}/`;
+    this.authorizeEndpoint = this.options.authorizeEndpoint || '/authorize';
+    this.tokenEndpoint = this.options.tokenEndpoint || '/authorize';
+    this.userinfoEndpoint = this.options.userinfoEndpoint || '/authorize';
   }
   private _url(path) {
     const telemetry = encodeURIComponent(
@@ -79,7 +85,9 @@ export default class Auth0Client {
     };
   }
   private _authorizeUrl(authorizeOptions: AuthorizeOptions) {
-    return this._url(`/authorize?${createQueryParams(authorizeOptions)}`);
+    return this._url(
+      `${this.authorizeEndpoint}?${createQueryParams(authorizeOptions)}`
+    );
   }
   private _verifyIdToken(id_token: string, nonce?: string) {
     return verifyIdToken({
@@ -190,7 +198,8 @@ export default class Auth0Client {
       client_id: this.options.client_id,
       code_verifier,
       code: codeResult.code,
-      redirect_uri: params.redirect_uri
+      redirect_uri: params.redirect_uri,
+      tokenEndpoint: this.tokenEndpoint
     });
     const decodedToken = this._verifyIdToken(authResult.id_token, nonceIn);
     const cacheEntry = {
@@ -301,7 +310,8 @@ export default class Auth0Client {
       audience: this.options.audience,
       client_id: this.options.client_id,
       code_verifier: transaction.code_verifier,
-      code
+      code,
+      tokenEndpoint: this.tokenEndpoint
     } as OAuthTokenOptions;
 
     // some old versions of the SDK might not have added redirect_uri to the
@@ -415,7 +425,8 @@ export default class Auth0Client {
         client_id: this.options.client_id,
         code_verifier,
         code: codeResult.code,
-        redirect_uri: params.redirect_uri
+        redirect_uri: params.redirect_uri,
+        tokenEndpoint: this.tokenEndpoint
       });
 
       const decodedToken = this._verifyIdToken(authResult.id_token, nonceIn);

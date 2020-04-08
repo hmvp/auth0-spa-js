@@ -95,6 +95,10 @@ interface Auth0ClientOptions extends BaseLoginOptions {
    * Defaults to 60s.
    */
   authorizeTimeoutInSeconds?: number;
+
+  authorizeEndpoint?: string;
+  tokenEndpoint?: string;
+  userinfoEndpoint?: string;
 }
 
 /**
@@ -262,6 +266,7 @@ interface OAuthTokenOptions {
   code_verifier: string;
   code: string;
   redirect_uri: string;
+  tokenEndpoint: string;
 }
 
 /**

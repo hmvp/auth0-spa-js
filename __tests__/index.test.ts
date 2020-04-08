@@ -315,7 +315,9 @@ describe('Auth0', () => {
     it('opens popup with correct popup, url and custom config', async () => {
       const { auth0, utils } = await setup();
       await auth0.loginWithPopup({}, { timeoutInSeconds: 1 });
-      expect(utils.runPopup).toHaveBeenCalledWith(
+      expect(
+        utils.runPopup
+      ).toHaveBeenCalledWith(
         `https://test.auth0.com/authorize?${TEST_QUERY_PARAMS}${TEST_TELEMETRY_QUERY_STRING}`,
         { timeoutInSeconds: 1 }
       );
@@ -324,7 +326,9 @@ describe('Auth0', () => {
     it('opens popup with correct popup, url and timeout from client options', async () => {
       const { auth0, utils } = await setup({ authorizeTimeoutInSeconds: 1 });
       await auth0.loginWithPopup({}, DEFAULT_POPUP_CONFIG_OPTIONS);
-      expect(utils.runPopup).toHaveBeenCalledWith(
+      expect(
+        utils.runPopup
+      ).toHaveBeenCalledWith(
         `https://test.auth0.com/authorize?${TEST_QUERY_PARAMS}${TEST_TELEMETRY_QUERY_STRING}`,
         { timeoutInSeconds: 1 }
       );
@@ -353,7 +357,8 @@ describe('Auth0', () => {
         client_id: TEST_CLIENT_ID,
         code: TEST_CODE,
         code_verifier: TEST_RANDOM_STRING,
-        redirect_uri: 'http://localhost'
+        redirect_uri: 'http://localhost',
+        tokenEndpoint: '/authorize'
       });
     });
 
@@ -384,7 +389,8 @@ describe('Auth0', () => {
         client_id: TEST_CLIENT_ID,
         code: TEST_CODE,
         code_verifier: TEST_RANDOM_STRING,
-        redirect_uri
+        redirect_uri,
+        tokenEndpoint: '/authorize'
       });
     });
 
@@ -398,7 +404,8 @@ describe('Auth0', () => {
         client_id: TEST_CLIENT_ID,
         code: TEST_CODE,
         code_verifier: TEST_RANDOM_STRING,
-        redirect_uri: 'http://localhost'
+        redirect_uri: 'http://localhost',
+        tokenEndpoint: '/authorize'
       });
     });
     it('calls `tokenVerifier.verify` with the `id_token` from in the oauth/token response', async () => {
@@ -852,7 +859,8 @@ describe('Auth0', () => {
           baseUrl: 'https://test.auth0.com',
           client_id: TEST_CLIENT_ID,
           code: TEST_CODE,
-          code_verifier: TEST_RANDOM_STRING
+          code_verifier: TEST_RANDOM_STRING,
+          tokenEndpoint: '/authorize'
         });
       });
       it('calls oauth/token with redirect uri from transaction if set', async () => {
@@ -1060,7 +1068,8 @@ describe('Auth0', () => {
           baseUrl: 'https://test.auth0.com',
           client_id: TEST_CLIENT_ID,
           code: TEST_CODE,
-          code_verifier: TEST_RANDOM_STRING
+          code_verifier: TEST_RANDOM_STRING,
+          tokenEndpoint: '/authorize'
         });
       });
       it('calls `tokenVerifier.verify` with the `id_token` from in the oauth/token response', async () => {
@@ -1476,7 +1485,8 @@ describe('Auth0', () => {
           client_id: TEST_CLIENT_ID,
           code: TEST_CODE,
           code_verifier: TEST_RANDOM_STRING,
-          redirect_uri: 'http://localhost'
+          redirect_uri: 'http://localhost',
+          tokenEndpoint: '/authorize'
         });
       });
       it('calls `tokenVerifier.verify` with the `id_token` from in the oauth/token response', async () => {

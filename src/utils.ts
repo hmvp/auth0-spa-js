@@ -207,8 +207,12 @@ const getJSON = async (url, options) => {
   return success;
 };
 
-export const oauthToken = async ({ baseUrl, ...options }: OAuthTokenOptions) =>
-  await getJSON(`${baseUrl}/oauth/token`, {
+export const oauthToken = async ({
+  baseUrl,
+  tokenEndpoint,
+  ...options
+}: OAuthTokenOptions) =>
+  await getJSON(`${baseUrl}${tokenEndpoint}`, {
     method: 'POST',
     body: JSON.stringify({
       grant_type: 'authorization_code',

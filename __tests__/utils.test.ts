@@ -257,7 +257,8 @@ describe('utils', () => {
         baseUrl: 'https://test.com',
         client_id: 'client_idIn',
         code: 'codeIn',
-        code_verifier: 'code_verifierIn'
+        code_verifier: 'code_verifierIn',
+        tokenEndpoint: '/oauth/token'
       });
       expect(mockUnfetch).toHaveBeenCalledWith('https://test.com/oauth/token', {
         body:
@@ -306,7 +307,8 @@ describe('utils', () => {
           baseUrl: 'https://test.com',
           client_id: 'client_idIn',
           code: 'codeIn',
-          code_verifier: 'code_verifierIn'
+          code_verifier: 'code_verifierIn',
+          tokenEndpoint: '/oauth/token'
         });
       } catch (error) {
         expect(error.message).toBe(
